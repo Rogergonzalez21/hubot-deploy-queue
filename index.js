@@ -187,7 +187,7 @@ module.exports = function(robot) {
     if (queue.isEmpty()) {
       res.send('Nobodyz! Like this: []');
     } else {
-      res.send('Aquí está la lista:\n ' + _.pluck(queue.get(), 'name') + ' con ' + _.pluck(queue.get(), 'metadata').join('\n'));
+      res.send('Aquí está la lista:\n ' + _.pluck(queue.get(), 'name').join(', ') + '.');  
     }
   }
 
