@@ -1,6 +1,4 @@
-var queue = require('./lib/queue')
-  , _ = require('lodash');
-
+var queue = require('./lib/queue');
 
 module.exports = function(robot) {
   robot.brain.on('loaded', function() {
@@ -187,10 +185,14 @@ module.exports = function(robot) {
     if (queue.isEmpty()) {
       res.send('¡Nadie!');
     } else {
-      if (_.pluck(queue.get(), 'metadata') != ''){
-        res.send('Aquí está la lista: \n ' + _.pluck(queue.get(), 'name') + ' con ' + _.pluck(queue.get(), 'metadata').join('\n'));
-      } else {
-        res.send('Aquí está la lista: \n' + _.pluck(queue.get(), 'name').join(', ') + '.');
+      res.send('Aquí está la lista:');
+      for (var x = 0; x < queue.get().length; x++) {
+        var item = queue.get()[x];
+        if (item.metadata !== undefined) {
+          res.send(item.name + ' con ' + item.metadata + '.');
+        } else {
+          res.send(item.name + '.');
+        }
       }
     }
   }
