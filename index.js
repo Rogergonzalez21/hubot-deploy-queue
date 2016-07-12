@@ -204,7 +204,7 @@ module.exports = function(robot) {
    * @param user
    */
   function notifyUser(user) {
-    robot.messageRoom(user.name, '¡Hey, te toca desplegar! Recuerda hacer merge con develop antes de desplegar');
+    robot.messageRoom(user.name, '¡Hey, te toca desplegar! Recuerda hacer merge con develop antes de desplegar y avisar en #test_alanna :)');
   }
 };
 
