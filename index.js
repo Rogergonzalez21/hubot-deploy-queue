@@ -47,23 +47,23 @@ module.exports = function(robot) {
       , metadata = (res.match[2] || '').trim();
 
     if (queue.contains({name: user})) {
-      res.reply('Whoa, hold you\'re horses! You\'re already in the queue once. Maybe give someone else a chance first?');
+      res.reply('¡Espera! Ya estás en la cola. Dale chance a los demás, ¿Sí?');
       return;
     }
 
     queue.push({name: user, metadata: metadata});
 
     if (length === 0) {
-      res.reply('Go for it!');
+      res.reply('¡Despliega!');
       return;
     }
 
     if (length === 1) {
-      res.reply('Alrighty, you\'re up next!');
+      res.reply('Perfecto, vienes despues');
       return;
     }
 
-    res.reply('Cool, There\'s ' + (length - 1) + ' person(s) ahead of you. I\'ll let you know when you\'re up.');
+    res.reply('Bien, hay ' + (length - 1) + ' personas delante de ti. Yo te aviso cuando sea tu turno.');
   }
 
   /**
@@ -74,17 +74,17 @@ module.exports = function(robot) {
     var user = res.message.user.name;
 
     if (!queue.contains({name: user})) {
-      res.reply('Ummm, this is a little embarrassing, but you aren\'t in the queue :grimacing:');
+      res.reply('¡Tu no estás en la cola! :grimacing:');
       return;
     }
 
     if (!queue.isCurrent({name: user})) {
-      res.reply('Nice try, but it\'s not your turn yet');
+      res.reply('Aún no es tu turno :cry:');
       return;
     }
 
     queue.advance();
-    res.reply('Nice job! :tada:');
+    res.reply('¡Buen trabajo! :tada:');
 
     if (!queue.isEmpty()) {
       // Send DM to next in line if the queue isn't empty
@@ -101,12 +101,12 @@ module.exports = function(robot) {
       , user = {name: name};
 
     if (queue.isEmpty()) {
-      res.send('Nobodyz!');
+      res.send('¡Nadie!');
     } else if (queue.isCurrent(user)) {
-      res.reply('It\'s you. _You\'re_ deploying. Right now.');
+      res.reply('Eres tu. Tu estás desplegando. Ahora.');
     } else {
       var current = queue.current()
-        , message = current.name + ' is deploying';
+        , message = current.name + ' está desplegando';
 
       message += current.metadata ? ' ' + current.metadata : '.';
       res.send(message);
@@ -122,9 +122,9 @@ module.exports = function(robot) {
       , next = queue.next();
 
     if (!next) {
-      res.send('Nobodyz!');
+      res.send('¡Nadie!');
     } else if (queue.isNext({name: user})) {
-      res.reply('You\'re up next! Get ready!');
+      res.reply('¡Ya vienes tu! Preparate!');
     } else {
       res.send(queue.next().name + ' is on deck.');
     }
@@ -146,12 +146,12 @@ module.exports = function(robot) {
     }
 
     if (!queue.contains(user)) {
-      res.send(name + ' isn\'t in the queue :)');
+      res.send(name + ' no está en la lista :)');
       return;
     }
 
     queue.remove(user);
-    res.send(name + ' has been removed from the queue. I hope that\'s what you meant to do...');
+    res.send(name + ' ha sido eliminado de la lista.');
 
     if (notifyNextUser) {
       notifyUser(queue.current());
@@ -167,14 +167,14 @@ module.exports = function(robot) {
       , user = {name: name};
 
     if (!queue.contains(user)) {
-      res.reply('No sweat! You weren\'t even in the queue :)');
+      res.reply('Ni siquiera estabas en la lista :)');
     } else if (queue.isCurrent(user)) {
-      res.reply('You\'re deploying right now! Did you mean `deploy done`?');
+      res.reply('¡Estás desplegando ahora! ¿No querrás decir `deploy done`?');
       return;
     }
 
     queue.remove(user);
-    res.reply('Alright, I took you out of the queue. Come back soon!');
+    res.reply('Perfecto, ya te saqué de la lista. ¡Vuelve pronto!');
   }
 
   /**
@@ -183,13 +183,13 @@ module.exports = function(robot) {
    */
   function listQueue(res) {
     if (queue.isEmpty()) {
-      res.send('Nobodyz! Like this: []');
+      res.send('¡Nadie!');
     } else {
-      res.send('Here\'s who\'s in the queue:');
+      res.send('Aquí está la lista:');
       for (var x = 0; x < queue.get().length; x++) {
         var item = queue.get()[x];
         if (item.metadata !== undefined) {
-          res.send(item.name + ' with ' + item.metadata + '.');
+          res.send(item.name + ' con ' + item.metadata + '.');
         } else {
           res.send(item.name + '.');
         }
@@ -210,7 +210,7 @@ module.exports = function(robot) {
    * @param user
    */
   function notifyUser(user) {
-    robot.messageRoom(user.name, 'Hey, you\'re turn to deploy!');
+    robot.messageRoom(user.name, '¡Hey, te toca desplegar! Recuerda hacer merge con develop antes de desplegar y avisar en #test_alanna :)');
   }
 };
 
