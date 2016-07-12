@@ -185,7 +185,7 @@ module.exports = function(robot) {
    */
   function listQueue(res) {
     if (queue.isEmpty()) {
-      res.send('Nobodyz! Like this: []');
+      res.send('¡Nadie!');
     } else {
       if (_.pluck(queue.get(), 'metadata') != ''){
         res.send('Aquí está la lista: \n ' + _.pluck(queue.get(), 'name') + ' con ' + _.pluck(queue.get(), 'metadata').join('\n'));
